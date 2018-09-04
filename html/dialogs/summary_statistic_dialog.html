@@ -1,0 +1,13 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">{{name}}</div>
+</div>
+<div class="modal-body an-modal-body">
+    <an-col-selection style="width: 50%"></an-col-selection>
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Running...' : 'Run'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgress">Cancel</button>
+</div>

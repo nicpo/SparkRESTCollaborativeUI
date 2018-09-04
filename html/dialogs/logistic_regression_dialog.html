@@ -1,0 +1,72 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">{{name}}</div>
+</div>
+<div class="modal-body an-modal-body">
+    <table style="width: 100%">
+        <colgroup>
+            <col style="width: 50%;">
+            <col style="width: 50%;">
+        </colgroup>
+        <tr>
+            <td style="vertical-align: top;">
+                <div class="form-group">
+                    <label class="control-label">Dependent variable:</label>
+                    <select class="form-control" ng-model="depVar"><option ng-repeat="depVar in depVars">{{depVar}}</option></select>
+                </div>
+                <an-col-selection></an-col-selection>
+            </td>
+            <td style="vertical-align: top; padding-left: 20px">
+                <div class="form-group" ng-class="{'has-error': regularizationParameterError}">
+                    <label class="control-label">Regularization Type/Parameter</label>
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="btn-group " dropdown>
+                                <button type="button" ng-disabled="inProgress" class="btn btn-default dropdown-toggle "
+                                        dropdown-toggle>
+                                    <span class="an-regtype-bt-toggle">{{regularizationType.name}}</span> <span
+                                        class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="an-regtype-option-item" ng-class="{selected:option==regularizationType}"
+                                        ng-repeat="option in regularizationTypes" ng-click="setSelectedOption(option)">
+                                        <a>{{option.name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-4" ng-show="regularizationType.id != 'none'" style="margin-left: 20px">
+                            <input type="text" ng-model="regularizationParameter"
+                                   class="form-control"/>
+
+                        </div>
+                    </div>
+                    <p class="help-block" ng-if="regularizationParameterError">Regularization Parameter is a positive double #.#### </p>
+                </div>
+                <div class="form-group" ng-class="{'has-error': trainingSizeError}">
+                    <label class="control-label">Training Size</label>
+                    <input type="text" ng-model="trainingSize"
+                           class="form-control"/>
+
+                    <p class="help-block" ng-if="trainingSizeError">Training Size is a positive double #.#### </p>
+                </div>
+                <div class="form-group" ng-class="{'has-error':showIterationsError}">
+                    <label class="control-label">Iterations</label>
+                    <input type="text" ng-model="iterations"
+                           class="form-control"/>
+
+                    <p class="help-block" ng-if="showIterationsError">Iterations must be a positive digit</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Running...' : 'Run'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgress">Cancel</button>
+
+</div>

@@ -1,0 +1,20 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">{{name}}</div>
+</div>
+<div class="modal-body an-modal-body">
+    <div class="form-group" ng-class="{'has-error':showIterationsError}" style="width: 50%">
+        <label class="control-label">Iterations</label>
+        <input type="text" ng-model="iterations"
+               class="form-control"/>
+        <p class="help-block" ng-if="showIterationsError">Iterations must be a positive digit</p>
+    </div>
+    <an-col-selection style="width: 50%"></an-col-selection>
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Running...' : 'Run'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgress">Cancel</button>
+
+</div>

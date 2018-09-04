@@ -1,0 +1,10 @@
+<div class="form-group" ng-class="{'has-error':showColumnsError}">
+    <label class="control-label">Columns</label>
+
+    <div class="an-column-selection">
+        <div ng-repeat="column in columns" class="an-column-item checkbox">
+            <label><input type="checkbox" ng-model="column.checked" value="column.name">{{column.name}}</label>
+        </div>
+    </div>
+    <p class="help-block" ng-if="showColumnsError">Select at least one column</p>
+</div>

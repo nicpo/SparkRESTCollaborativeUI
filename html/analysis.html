@@ -1,0 +1,440 @@
+<div ng-show="analyseLoadingState" class="loadingMask">
+    <img src="css/img/loading.gif">
+</div>
+
+<div ng-show="!analyseLoadingState" class="an-form form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <h2 class="form-control-static">{{analysis.name}}</h2>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <p class="form-control-static">Finished at {{analysis.startTime | date:'medium'}} - started at {{analysis.endTime |
+                date:'medium'}} - {{analysis.user}}</p>
+        </div>
+    </div>
+    <div ng-if="analysis.statType === 'Correlation'">
+        <div class="form-group" commentable-threads="commentThreads['query']"
+                commentable="section" commentable-name="'query'" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">
+                {{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'method'"
+             commentable-threads="commentThreads['method']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Method</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.method}}</p></div>
+        </div>
+        <div class="form-group" commentable-threads="commentThreads['results']"
+                       commentable="section"commentable-name="'results'" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Results</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th ng-repeat="col in analysis.output.columns">{{col}}</th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="row in analysis.output.matrix">
+                        <td style="font-weight: bold">{{analysis.output.columns[$index]}}</td>
+                        <td ng-repeat="cell in row track by $index">{{cell}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div ng-if="analysis.statType == 'LogisticRegression'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+                commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'trainingSize'"
+             commentable-threads="commentThreads['trainingSize']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Training size</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.trainingSize}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'precision'"
+             commentable-threads="commentThreads['precision']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Model precision</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.precision}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'regularization'"
+             commentable-threads="commentThreads['regularization']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Regularization</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.regularizationType?analysis.request.regularizationType +' ' +
+                analysis.request.regularizationParameter: ''}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'fMeasures'"
+             commentable-threads="commentThreads['fMeasures']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">f measure for target classes</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <tr ng-repeat="(key, value) in analysis.output.fMeasures">
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'features'"
+             commentable-threads="commentThreads['features']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Feature weights</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <tr ng-repeat="(key, value) in analysis.output.features">
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div ng-if="analysis.statType === 'LinearRegression'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+             commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'iterations'"
+             commentable-threads="commentThreads['iterations']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Iterations</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.iterations}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'mse'"
+             commentable-threads="commentThreads['mse']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Mean Square Error (MSE)</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.mse}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'weights'"
+             commentable-threads="commentThreads['weights']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Feature weights</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <tr ng-repeat="(key, value) in analysis.output.weights">
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div ng-if="analysis.statType === 'KMeans'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+             commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'clusters'"
+             commentable-threads="commentThreads['clusters']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Clusters</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.clusters}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'iterations'"
+             commentable-threads="commentThreads['iterations']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Iterations</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.iterations}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'runs'"
+             commentable-threads="commentThreads['runs']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Runs</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.runs}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'wsse'"
+             commentable-threads="commentThreads['wsse']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Within-Set Sum of Squared Errors (WSSE)</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.wssse}}</p></div>
+        </div>
+    </div>
+    <div ng-if="analysis.statType === 'SVM'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+             commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'trainingSize'"
+             commentable-threads="commentThreads['trainingSize']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Training size</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.trainingSize}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'iterations'"
+             commentable-threads="commentThreads['iterations']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Iterations</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.iterations}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'auroc'"
+             commentable-threads="commentThreads['auroc']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">AUROC</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.auroc}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'weights'"
+             commentable-threads="commentThreads['weights']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Weights</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <tr>
+                        <td>Intercept</td>
+                        <td>{{analysis.output.intercept}}</td>
+                    </tr>
+                    <tr ng-repeat="(key, value) in analysis.output.weights">
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div ng-if="analysis.statType === 'Summary'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+             commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable-threads="commentThreads['results']"
+                       commentable="section" commentable-name="'results'" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Results</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>min</th>
+                        <th>max</th>
+                        <th>mean</th>
+                        <th>variance</th>
+                        <th>q1</th>
+                        <th>q3</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td style="font-weight: bold">{{analysis.output.columns[0]}}</td>
+                        <td>{{analysis.output.min}}</td>
+                        <td>{{analysis.output.max}}</td>
+                        <td>{{analysis.output.mean}}</td>
+                        <td>{{analysis.output.variance}}</td>
+                        <td>{{analysis.output.q1}}</td>
+                        <td>{{analysis.output.q3}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div ng-if="analysis.statType == 'Bayes'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+                commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'trainingSize'"
+             commentable-threads="commentThreads['trainingSize']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Training size</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.trainingSize}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'lambda'"
+             commentable-threads="commentThreads['lambda']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Lambda</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.lambda}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'accuracy'"
+             commentable-threads="commentThreads['accuracy']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Accuracy</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.accuracy}}</p></div>
+        </div>
+
+
+        <div class="form-group" commentable="section" commentable-name="'pi'"
+             commentable-threads="commentThreads['pi']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Pi</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <tr ng-repeat="pis in analysis.output.pi">
+                        <td>{{pis}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group" commentable="section" commentable-name="'theta'"
+             commentable-threads="commentThreads['theta']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Theta</label>
+
+            <div class="col-sm-10">
+                <table class="table table-bordered form-control-static">
+                    <tr ng-repeat="row in analysis.output.theta">
+                        <td ng-repeat="cell in row">{{cell}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div ng-if="analysis.statType == 'DecisionTree'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+                commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'algo'"
+             commentable-threads="commentThreads['algo']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Algorithm</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.algo}}</p></div>
+        </div>
+        <div ng-if="analysis.request.algo == 'classification'" class="form-group" commentable="section" commentable-name="'numClasses'"
+             commentable-threads="commentThreads['numClasses']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Number of classes in the dependent variable</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.numClasses}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'impurity'"
+             commentable-threads="commentThreads['impurity']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Impurity measure</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.impurity}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'maxDepth'"
+             commentable-threads="commentThreads['maxDepth']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Maximum depth</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.maxDepth}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'maxBins'"
+             commentable-threads="commentThreads['maxBins']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Maximum number of bins</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.maxBins}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'trainingSize'"
+             commentable-threads="commentThreads['trainingSize']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Training size</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.trainingSize}}</p></div>
+        </div>
+
+        <div class="form-group" commentable="section" commentable-name="'mse'"
+             commentable-threads="commentThreads['mse']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">MSE</label>
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.mse}}</p></div>
+        </div>
+
+        <div class="form-group" commentable="section" commentable-name="'tree'"
+             commentable-threads="commentThreads['tree']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Decision tree</label>
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.tree}}</p></div>
+        </div>
+    </div>
+
+
+
+
+
+    <div ng-if="analysis.statType == 'RandomForest'">
+        <div class="form-group" commentable="section" commentable-name="'query'"
+                commentable-threads="commentThreads['query']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Query</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.query}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'algo'"
+             commentable-threads="commentThreads['algo']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Algorithm</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.algo}}</p></div>
+        </div>
+        <div ng-if="analysis.request.algo == 'classification'" class="form-group" commentable="section" commentable-name="'numClasses'"
+             commentable-threads="commentThreads['numClasses']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Number of classes in the dependent variable</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.numClasses}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'impurity'"
+             commentable-threads="commentThreads['impurity']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Impurity measure</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.impurity}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'numTrees'"
+             commentable-threads="commentThreads['numTrees']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Number of trees</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.numTrees}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'maxDepth'"
+             commentable-threads="commentThreads['maxDepth']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Maximum depth</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.maxDepth}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'maxBins'"
+             commentable-threads="commentThreads['maxBins']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Maximum number of bins</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.maxBins}}</p></div>
+        </div>
+        <div class="form-group" commentable="section" commentable-name="'trainingSize'"
+             commentable-threads="commentThreads['trainingSize']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Training size</label>
+
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.request.trainingSize}}</p></div>
+        </div>
+
+        <div class="form-group" commentable="section" commentable-name="'mse'"
+             commentable-threads="commentThreads['mse']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">MSE</label>
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.mse}}</p></div>
+        </div>
+
+        <div class="form-group" commentable="section" commentable-name="'tree'"
+             commentable-threads="commentThreads['tree']" commentable-enabled="canComment">
+            <label class="col-sm-2 control-label">Decision tree</label>
+            <div class="col-sm-10"><p class="form-control-static">{{analysis.output.tree}}</p></div>
+        </div>
+    </div>
+
+
+
+</div>

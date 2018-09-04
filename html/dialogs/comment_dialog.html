@@ -1,0 +1,12 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">Comment on "{{selectedItem.name}}"</div>
+</div>
+<div class="modal-body">
+    <textarea type="text" class="form-control" ng-model="comment" placeholder="Write your comment"></textarea>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="confirmComment()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ? 'Add...' : 'Add'}}
+    </button>
+    <button class="btn btn-default" ng-click="cancelComment()" ng-disabled="inProgress">Cancel</button>
+</div>

@@ -1,0 +1,12 @@
+<div class="modal-header an-modal-header-danger">
+    <div class="modal-title ">Confirm</div>
+</div>
+<div class="modal-body">
+   Are you sure you want to delete <b>"{{selectedItem.name}}"</b>?
+</div>
+<div class="modal-footer">
+    <button class="btn btn-danger" ng-click="confirmDelete()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ? 'Delete...' : 'Delete'}}
+    </button>
+    <button class="btn btn-default" ng-click="cancelDelete()" ng-disabled="inProgress">Cancel</button>
+</div>

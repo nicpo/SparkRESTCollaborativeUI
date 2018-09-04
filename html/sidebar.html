@@ -1,0 +1,49 @@
+<div class="sidebar-right" ng-class="{show: showSidebar}" ng-controller="SidebarCtrl">
+
+    <div ng-show = "item != null" class="side-scroll-bar">
+        <div class="side-section">
+            <div style="position: relative; padding-right: 20px" e-form="nameEditForm" onbeforesave="updateName($data)"
+                 editable-textarea="item.name" e-rows="3" e-cols="30" ng-click="onNameClick()">
+                <h2 class="side-section-name-lbl">{{item.name || 'Add Name'}}</h2>
+                <div class="an-edit-ico header" ng-show="canEdit"></div>
+            </div>
+        </div>
+
+        <div class="side-section" >
+            <div style="position: relative; padding-right: 20px" e-form="descriptionEditForm" onbeforesave="updateDescription($data)"
+                 editable-textarea="item.description" e-rows="7" e-cols="30">
+                <span class="side-sction-descr-lbl" ng-click="onDescriptionClick()">{{item.description || 'Add Description'}}</span>
+                <div class="an-edit-ico" ng-show="canEdit"></div>
+            </div>
+        </div>
+
+        <div ng-show= "item.type == 'dataset'" class="side-section" >
+            <div class="row" >
+                <div class="col-md-6">File size</div>
+                <div class="col-md-6">{{item.metaData.fileSize | bytes}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Records count:</div>
+                <div class="col-md-6">{{item.metaData.recordCount | number}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Columns count:</div>
+                <div class="col-md-6">{{item.metaData.columnCount | number}}</div>
+            </div>
+        </div>
+
+        <div class="side-section">
+            <div class="an-side-divider"></div>
+        </div>
+
+        <div class="side-section">
+            <div class="an-side-menu">
+                <div class="an-side-menu-item" ng-model="sidebarSelectedBlock" btn-radio="'Comments'">Comments</div>
+                <div class="an-side-menu-item" ng-model="sidebarSelectedBlock" btn-radio="'Activity'">Activity</div>
+            </div>
+            <div>
+                <comments-thread ng-repeat="thread in threads" reply-enabled="canComment" comments="thread" ng-show="sidebarSelectedBlock === 'Comments'" />
+            </div>
+        </div>
+    </div>
+</div>

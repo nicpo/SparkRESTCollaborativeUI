@@ -1,0 +1,60 @@
+<div style="height: 100%">
+    <div class="sidebar-left">
+        <div ng-repeat="menuItem in menuItems">
+            <an-menu-item an-label="{{menuItem.label}}" ng-click="onItemClick(menuItem)"
+                          an-class="{{menuItem.itemClass}}"
+                          an-selected="menuItem.selected"></an-menu-item>
+        </div>
+    </div>
+    <div class="dataset-list" ng-show="selectedView === 'Dataset' && !loadingTiles">
+        <div ng-repeat="dataset in datasets | notViews" class="dataset-tile"
+             ng-click="onTileClick(dataset, 'dataset')"
+             ng-class="{active: dataset === activeItem}">
+            <div class="dataset-highlight-bx" ng-dblclick="openDataset(dataset)">
+                <div class="an-dataset-tile-desciption">
+                    {{dataset.description}}
+                    <div class="an-dataset-tile-table">table: {{dataset.table}}</div>
+                    <div class="an-dataset-tile-timestamp">Created: {{dataset.timestamp | date}}</div>
+                    <div aria-hidden="true" class="an-cmt-ico" ng-show="dataset.hasComment">
+                    </div>
+                </div>
+                <div class="an-dataset-tile-title" style="float: left;">
+                    <div aria-hidden="true" class="an-dataset-ico">
+                        <span class="an-dataset-title-name">{{dataset.name}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dataset-list" ng-show="selectedView === 'Analysis' && !loadingTiles">
+        <div ng-repeat="analysis in analyses" class="dataset-tile"
+             ng-click="onTileClick(analysis, 'analysis')"
+             ng-class="{active: analysis === activeItem, 'dataset-tile-disabled': analysis.state == 'ERROR' || analysis.state == 'QUEUED'}">
+            <div class="dataset-highlight-bx" ng-dblclick="openAnalysis(analysis)">
+                <div class="an-dataset-tile-desciption"
+                     ng-class="{'an-dataset-disabled-bgr': analysis.state == 'ERROR' || analysis.state == 'QUEUED'}">
+                    {{analysis.type}}
+                    <div class="an-dataset-tile-table">{{analysis.description}}</div>
+                    <div class="an-dataset-tile-timestamp">Created: {{analysis.endTime | date}}</div>
+                    <div aria-hidden="true" class="an-cmt-ico" ng-show="analysis.hasComment">
+                    </div>
+                    <div ng-show="analysis.state == 'ERROR'" style="margin-top: 40px;">
+                        <div class="an-dataset-error"></div>
+                        <span class="an-dataset-error-lbl">Analysis error</span></div>
+                    <div ng-show="analysis.state == 'QUEUED'" style="margin-top: 40px; color: #9B9B9B">
+                        <img src="css/img/loading.gif">
+                        In Process..
+                    </div>
+                </div>
+                <div class="an-dataset-tile-title" style="float: left;">
+                    <div aria-hidden="true" class="an-analysis-ico">
+                        <span class="an-dataset-title-name">{{analysis.name}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="loadingTiles" class="loadingMask">
+        <img src="css/img/loading.gif">
+    </div>
+</div>

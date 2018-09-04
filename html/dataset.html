@@ -1,0 +1,78 @@
+<div class="sidebar-left" ng-controller="DataSetNavListCtrl">
+    <h4 class="an-dataset-top-lbl">Dataset</h4>
+    <div class="list-group an-related-an-pnl">
+
+        <a href="" class="list-group-item an-related-an-cnt" ng-dblclick="onDatasetClick(dataset)" ng-click="onItemClick(dataset)" ng-class="{active: dataset === selectedItem, focused : analyse === focusedItem}">
+            <div class="an-related-an-item">
+                <div aria-hidden="true" class="an-dataset-ico">
+                </div>
+                <div class="an-analyse-name-cnt">
+                    <div class="an-date-lbl">{{dataset.timestamp | date}}</div>
+                    <div class="an-name-lbl">{{dataset.name}}</div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <h4 class="an-related-an-lbl">Related Analysis</h4>
+    <div class="panel panel-default an-related-loading-pnl" ng-show="navListLoadingState === true">
+        <div class="loadingMask">
+            <img src="css/img/loading.gif">
+        </div>
+    </div>
+    <div class="an-ralated-item-cnt">
+    <div class="list-group an-related-an-pnl" ng-show="navListLoadingState === false">
+
+        <a href="" class="list-group-item an-related-an-cnt" ng-dblclick="onDblClick(analyse)" ng-click="onItemClick(analyse)" ng-class="{active: analyse === selectedItem, focused : analyse === focusedItem}" ng-repeat="analyse in relatedAnalyses">
+            <div class="an-related-an-item">
+            <div aria-hidden="true" class="an-analysis-ico">
+            </div>
+            <div class="an-analyse-name-cnt">
+                <div class="an-date-lbl">{{analyse.endTime | date}}</div>
+                <div class="an-name-lbl">{{analyse.name}}</div>
+            </div>
+            </div>
+        </a>
+    </div>
+    </div>
+
+</div>
+
+    <div ng-include="analysisTemplate" ng-show="viewState === 'AnalyseView'" ng-controller="AnalysisCtrl"
+         class="an-template-ct">
+    </div>
+
+<div ng-show="viewState === 'DataSetView'" ng-controller="DatasetCtrl" class="an-dataset-details-ct">
+        <div class="filters-block" style="display: block;">
+            <div class="filter" ng-repeat="filter in filters">
+                <div class="label label-primary">{{filter}}</div>
+            <span class="glyphicon glyphicon-remove filter-close" aria-hidden="true"
+                  ng-click="deleteFilter(filter)"></span>
+            </div>
+        </div>
+        <div ng-show="sampleLoading" class="loadingMask">
+            <img src="css/img/loading.gif">
+        </div>
+        <div class="an-dataset-preview-container" style="display: block" ng-show="!sampleLoading">
+            <div class="panel panel-default" style="display: inline-block !important;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="header in sampleTable[0] track by $index"
+                            commentable="column" commentable-name="header" commentable-threads="commentThreads[header]" commentable-enabled="canComment">
+                            {{header}}<div class="header-stub"></div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in sampleTable.slice(1)">
+                        <td ng-repeat="value in row track by $index">{{value}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <div class="an-status-bar">
+            <span>{{metaData.recordCount | number}} records</span><span class="li-divider"></span><span> {{metaData.fileSize | bytes}} </span>
+    </div>
+    </div>
+

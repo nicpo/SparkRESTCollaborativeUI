@@ -1,0 +1,153 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">Import Dataset</div>
+</div>
+<div class="modal-body an-modal-body">
+    <div ng-show="step === 0" class="form-horizontal">
+        <h4 class="text-center step-header">
+            <span class="label label-default">Source - Step 1/3</span>
+        </h4>
+        <form name="stepOneForm" novalidate>
+            <div class="form-group" show-errors>
+                <label class="col-sm-3 control-label">Dataset name</label>
+                <div class="col-sm-8">
+                    <input type="text" ng-model="datasetName" name="datasetName" required ng-readonly="inProgress" class="form-control"/>
+                    <p class="help-block" ng-show="stepOneForm.datasetName.$error.required">Dataset name is required</p>
+                </div>
+            </div>
+            <div class="form-group" show-errors>
+                <label class="col-sm-3 control-label">Table name</label>
+                <div class="col-sm-8">
+                    <input type="text" ng-model="tableName" name="tableName" required ng-readonly="inProgress" class="form-control"/>                    
+                    <p class="help-block" ng-show="stepOneForm.tableName.$error.required">Table name is required</p>
+                </div>
+            </div>
+            <div class="form-group" show-errors>
+                <label class="col-sm-3 control-label">File location: s3n://</label>
+                <div class="col-sm-8">
+                    <input type="text" ng-model="fileLocation" name="fileLocation" required ng-readonly="inProgress" class="form-control"/>
+                    <p class="help-block" ng-show="stepOneForm.fileLocation.$error.required">File location is required</p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div ng-show="step === 1">
+        <h4 class="text-center step-header">
+            <span class="label label-default">Fields - Step 2/3</span>
+        </h4>
+        <div class="form-group">
+            <label>Delimiter</label>
+            <div>
+                <div class="radio-inline">
+                    <input type="radio" ng-model="delimiter" ng-change="delimiterChange()" value="," checked>Comma                
+                </div>
+                <div class="radio-inline">
+                    <input type="radio" ng-model="delimiter" ng-change="delimiterChange()" value="tab" checked>Tab                
+                </div>
+                <div class="radio-inline">
+                    <input type="radio" ng-model="delimiter" ng-change="delimiterChange()" value=";" checked>Semicolon                
+                </div>
+                <div class="radio-inline">
+                    <input type="radio" ng-model="delimiter" ng-change="delimiterChange()" value="other" checked>Other:                
+                   <input type="text" class="form-control other-delimiter-input" ng-model="delimiterValue" ng-change="delimiterValueChange()" maxlength="1" ng-disabled="delimiter !== 'other'">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="withHeader" ng-change="updatePreview()">
+                    First line contains column headers
+                </label>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <img src="css/img/loading.gif" class="center-block preview-loader"  ng-show="dataLoading"/>
+            <table class="table table-bordered" ng-show="!dataLoading">
+                <thead>
+                    <tr>
+                        <th ng-if="withHeader" ng-repeat="header in headers">{{header}}</th>
+                        <th ng-if="!withHeader" ng-repeat="header in headers">Col_{{$index}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in previewTable">
+                        <td ng-repeat="value in row track by $index">{{value}}</td>
+                    </tr>                
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div ng-show="step === 2">
+        <h4 class="text-center step-header">
+            <span class="label label-default">Formats - Step 3/3</span>
+        </h4>
+        <div class="form-group">
+            Click on columns to select their data format
+        </div>
+        <div class="form-group">
+            <label>Column data format</label>
+            <div>
+                <div class="radio-inline">
+                    <input type="radio" ng-model="activeColumnType" ng-change="columnTypeChange()" value="STRING" checked>Text                
+                </div>
+                <div class="radio-inline">
+                    <input type="radio" ng-model="activeColumnType" ng-change="columnTypeChange()" value="LONG" checked>Long                
+                </div>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <img src="css/img/loading.gif" class="center-block preview-loader"  ng-show="dataLoading"/>
+            <table class="table table-bordered" ng-show="!dataLoading">
+                <thead>
+                    <tr>
+                        <th ng-if="withHeader" ng-click="selectColumn($index)" ng-repeat="header in headers" ng-class="{active: activeColumn === $index}">{{header}}</th>
+                        <th ng-if="!withHeader" ng-click="selectColumn($index)" ng-repeat="header in headers" ng-class="{active: activeColumn === $index}">Col_{{$index + 1}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in previewTable">
+                        <td ng-repeat="value in row track by $index">{{value}}</td>
+                    </tr>                
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div ng-show="step === 3">
+        <h4 class="text-center step-header">
+            <span class="label label-default">Sharing - Step 4/4</span>
+        </h4>
+    </div>
+</div>
+
+<div class="modal-footer an-modal-footer" ng-show="step === 0">
+    <button class="btn btn-default" ng-click="$dismiss()" ng-disabled="inProgress">Cancel</button>
+    <button class="btn btn-primary" ng-click="stepOneNext()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Applying...' : 'Next'}}
+    </button>
+</div>
+<div class="modal-footer an-modal-footer" ng-show="step === 1">
+    <button class="btn btn-default" ng-click="$dismiss()" ng-disabled="inProgress">Cancel</button>
+    <button class="btn btn-default" ng-click="step = 0" ng-disabled="inProgress">Back</button>
+    <button class="btn btn-primary" ng-click="step = 2" ng-disabled="inProgress">Next</button>
+    <button class="btn btn-default" ng-click="finish()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Importing...' : 'Finish'}}
+    </button>
+</div>
+<div class="modal-footer an-modal-footer" ng-show="step === 2">
+    <button class="btn btn-default" ng-click="$dismiss()" ng-disabled="inProgress">Cancel</button>
+    <button class="btn btn-default" ng-click="step = 1" ng-disabled="inProgress">Back</button>
+    <button class="btn btn-primary" ng-click="finish()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Importing...' : 'Finish'}}
+    </button>
+</div>
+<div class="modal-footer an-modal-footer" ng-show="step === 3">
+    <button class="btn btn-default" ng-click="$dismiss()" ng-disabled="inProgress">Cancel</button>
+    <button class="btn btn-default" ng-click="step = 2" ng-disabled="inProgress">Back</button>
+    <button class="btn btn-primary" ng-click="finish()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Importing...' : 'Finish'}}
+    </button>
+</div>

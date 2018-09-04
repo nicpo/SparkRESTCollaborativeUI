@@ -1,0 +1,25 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">{{name}}</div>
+</div>
+<div class="modal-body an-modal-body">
+    <div class="form-group">
+        <label>Correlation coefficient</label>
+
+        <div>
+            <div class="btn-group btn-group-sm">
+                <label class="btn btn-default" ng-model="method" btn-radio="'pearson'" uncheckable>Pearson</label>
+                <label class="btn btn-default" ng-model="method" btn-radio="'spearman'"
+                       uncheckable>Spearman</label>
+            </div>
+        </div>
+    </div>
+    <an-col-selection style="width: 50%"></an-col-selection>
+
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Running...' : 'Run'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgress">Cancel</button>
+</div>

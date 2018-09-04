@@ -1,0 +1,59 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">Add Feature</div>
+</div>
+<div class="modal-body an-modal-body">
+    <div class="row">
+        <div class="col-xs-1 an-radio-block">
+            <div class="radio">
+                <label><input type="radio" ng-model="type" value="UI"></label>
+            </div>
+        </div>
+        <div class="col-xs-10">
+            <div class="form-group">
+                <label class="control-label">From feature</label>
+                <select class="form-control" ng-model="header" ng-focus="type = 'UI'"><option ng-repeat="header in headers">{{header}}</option></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Function or condition</label>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <select class="form-control" ng-model="queryFunction" ng-options="func as func.text for func in functions"></select>
+                    </div>
+                    <div class="form-group" ng-show="queryFunction.hasLiteral && !queryFunction.hasPredicate">
+                        <input type="text" class="form-control" ng-model="queryLiteral" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1 an-radio-block">
+            <div class="radio">
+                <label><input type="radio" ng-model="type" value="SQL"></label>
+            </div>
+        </div>
+        <div class="col-xs-10">
+            <div class="form-vertical">
+                <div class="form-group">
+                    <label class="control-label">SQL</label>
+                    <textarea class="form-control" rows="3" ng-model="query" ng-focus="type = 'SQL'"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="control-label">Feature name</label>
+                <input class="form-control" ng-model="featureName" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="applyFeature()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Applying...' : 'Apply'}}
+    </button>
+    <button class="btn btn-default" ng-click="$dismiss()" ng-disabled="inProgress">Cancel</button>
+</div>

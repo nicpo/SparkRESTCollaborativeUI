@@ -1,0 +1,108 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">{{name}}</div>
+</div>
+<div class="modal-body an-modal-body">
+    <table style="width: 100%">
+        <colgroup>
+            <col style="width: 50%;">
+            <col style="width: 50%;">
+        </colgroup>
+        <tr>
+            <td style="vertical-align: top;">
+                <label class="control-label">Dependent variable:</label>
+                <select class="form-control" ng-model="depVar"><option ng-repeat="depVar in depVars">{{depVar}}</option></select>
+            </td>
+            <td style="vertical-align: top;">
+                <an-col-selection></an-col-selection>
+            </td>
+            <td style="vertical-align: top; padding-left: 20px">
+                <div class="form-group" ng-class="{'has-error': algoError}">
+                    <label class="control-label">Tree type</label>
+
+                    <div class="row">
+                           <div class="btn-group" dropdown>
+                                <button type="button" ng-disabled="inProgress" class="btn btn-default dropdown-toggle "
+                                        dropdown-toggle>
+                                    <span class="an-regtype-bt-toggle">{{algo.name}}</span> <span
+                                        class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="an-regtype-option-item" ng-class="{selected:option==algo}"
+                                        ng-repeat="algo in algos" ng-click="setSelectedOption(algo)">
+                                        <a>{{algo.name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="form-group" ng-show="algo.id === 'classification'" style="margin-left: 20px">
+                            <label class="control-label">Impurity</label>
+                            <select class="form-control" ng-model="impurity">
+                                <option selected="selected">Gini</option>
+                                <option>Entropy</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-show="algo.id === 'regression'" style="margin-left: 20px">
+                            <label class="control-label">Impurity</label>
+                            <select class="form-control" ng-model="impurity">
+                                <option selected="selected">Variance</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="help-block" ng-if="algoError">If decision tree type is Classification, impurity should be either Gini or Entropy. If Regression, it should be Variance</p>
+                </div>
+                <div class="form-group" ng-class="{'has-error': maxDepthError}">
+                    <label class="control-label">Maximum tree depth</label>
+                    <input type="text" ng-model="maxDepth"
+                           class="form-control"/>
+
+                    <p class="help-block" ng-if="trainingSizeError">Maximum depth is the number of tree levels and should be an integer</p>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error':showNumTreesError}">
+                    <label class="control-label">Number of trees</label>
+                    <input type="text" ng-model="numTrees"
+                           class="form-control"/>
+
+                    <p class="help-block" ng-if="showNumTreesError">The number of trees in the forest should be a positive integer</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Subsampling rate</label>
+                    <input type="text" ng-model="subsamplingRate"
+                           class="form-control"/>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': showTrainingSizeError}">
+                    <label class="control-label">Training Size</label>
+                    <input type="text" ng-model="trainingSize"
+                           class="form-control"/>
+
+                    <p class="help-block" ng-if="showTrainingSizeError">Training size should be a positive double</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Maximum bins</label>
+                    <input type="text" ng-model="maxBins"
+                           class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Feature subset strategy</label>
+                    <select class="form-control" ng-model="impurity">
+                        <option>Auto</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Running...' : 'Run'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgress">Cancel</button>
+
+</div>

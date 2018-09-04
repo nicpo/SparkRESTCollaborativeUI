@@ -1,0 +1,71 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">{{name}}</div>
+</div>
+<div class="modal-body an-modal-body">
+    <div ng-show="loadingState">
+        <img src="css/img/loading.gif" class="center-block"/>
+    </div>
+    <div class="form-horizontal" ng-show="!loadingState">
+        <div class="form-group">
+            <label class="col-sm-5 control-label">Analysis Type:</label>
+
+            <div class="col-sm-6">
+                <div class="btn-group an-predict-dp" dropdown>
+                    <button type="button" ng-disabled="inProgress"
+                            class="btn btn-default dropdown-toggle  an-predict-dp-btn"
+                            dropdown-toggle>
+                        <span class="an-predict-dp-lbl">{{type.name}}</span> <span
+                            class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="an-regtype-option-item"
+                            ng-class="{selected:option==type}"
+                            ng-repeat="option in types"
+                            ng-click="setSelectedType(option)">
+                            <a style="min-height: 26px">{{option.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': showAnalysisError}">
+            <label class="col-sm-5 control-label">Use Model:</label>
+
+            <div class="col-sm-6">
+                <div class="btn-group an-predict-dp" dropdown>
+                    <button type="button" ng-disabled="inProgress"
+                            class="btn btn-default dropdown-toggle  an-predict-dp-btn"
+                            dropdown-toggle>
+                        <span class="an-predict-dp-lbl">{{analys.name}}</span> <span
+                            class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="an-regtype-option-item"
+                            ng-class="{selected:option==analys}"
+                            ng-repeat="option in analysis"
+                            ng-click="setSelectedOption(option)">
+                            <a>{{option.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <p class="help-block" ng-if="showAnalysisError">Model is required </p>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': showNameError}">
+
+            <label class="col-sm-5 control-label">Output Dataset Name:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" ng-model="datasetName">
+                <p class="help-block" ng-if="showNameError">Name is required </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Running...' : 'Run'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgress">Cancel</button>
+</div>

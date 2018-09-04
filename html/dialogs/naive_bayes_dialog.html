@@ -1,0 +1,46 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">{{name}}</div>
+</div>
+<div class="modal-body an-modal-body">
+    <div class="form-group">
+        <label class="control-label">Dependent variable:</label>
+        <select class="form-control" ng-model="depVar"><option ng-repeat="depVar in depVars">{{depVar}}</option></select>
+    </div>
+    <table style="width: 100%">
+        <colgroup>
+            <col style="width: 50%;">
+            <col style="width: 50%;">
+        </colgroup>
+        <tr>
+            <td style="vertical-align: top;">
+                <an-col-selection></an-col-selection>
+            </td>
+            <td style="vertical-align: top; padding-left: 20px">
+
+                <div class="form-group" ng-class="{'has-error': trainingSizeError}">
+                    <label class="control-label">Training Size</label>
+                    <input type="text" ng-model="trainingSize"
+                           class="form-control"/>
+
+                    <p class="help-block" ng-if="trainingSizeError">Training Size is a positive double #.#### </p>
+                </div>
+                <div class="form-group" ng-class="{'has-error':showLambdaError}">
+                    <label class="control-label">Lambda</label>
+                    <input type="text" ng-model="lambda"
+                           class="form-control"/>
+
+                    <p class="help-block" ng-if="showLambdaError">Lambda must be a double</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div class="modal-footer an-modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Running...' : 'Run'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgress">Cancel</button>
+
+</div>

@@ -1,0 +1,64 @@
+<div class="modal-header an-modal-header">
+    <div class="modal-title">Share "{{selectedItem.name}}"</div>
+</div>
+<div class="modal-body an-modal-body">
+    <table ng-show="!dataLoading" class="an-share-table">
+        <col/>
+        <col class="an-share-dropdown-col"/>
+        <col class="an-share-ctrl-col"/>
+        <tr ng-show="users.length == 0">
+            <td colspan="2">
+                <p style="padding-right: 20px; text-align: right" class="help-block"> Add users to share </p>
+            </td>
+            <td>
+                <button type="button" style="display: inline-block" ng-disabled="inProgress" class="btn btn-default"
+                        ng-click="addUser()"  aria-label="Add user">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+            </td>
+        </tr>
+        <tr ng-show="users.length != 0" ng-repeat="user in users">
+            <td ng-class="{'has-error':user.emailError}">
+                <input type="text" required placeholder="Type user email" ng-readonly="inProgress"
+                       class="form-control" ng-model="user.email"/>
+
+                <p class="help-block" ng-if="user.emailError">Wrong user email</p>
+            </td>
+            <td>
+                <div class="btn-group" dropdown>
+                    <button type="button" ng-disabled="inProgress" class="btn btn-default dropdown-toggle "
+                            dropdown-toggle>
+                        <span class="an-share-bt-toggle">{{user.selectedOption.name}}</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="an-sh-option-item" ng-class="{selected:option==user.selectedOption}"
+                            ng-repeat="option in shareOptions" ng-click="setSelectedOption(user, option)">
+                            <a>{{option.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <button type="button" style="display: inline-block" ng-disabled="inProgress" class="btn btn-default"
+                        ng-click="removeUser(user)" aria-label="Add user">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </button>
+                <button type="button" style="display: inline-block" ng-disabled="inProgress" class="btn btn-default"
+                        ng-click="addUser()"  aria-label="Add user">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+    <div ng-show="dataLoading">
+        <img src="css/img/loading.gif" class="center-block"/>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="onConfirmClick()" ng-disabled="inProgress || dataLoading">
+        <span ng-class="{'glyphicon glyphicon-refresh spinning': inProgress}" aria-hidden="true"></span>{{inProgress ?
+        'Apply...' : 'Apply'}}
+    </button>
+    <button class="btn btn-default" ng-click="onCancelClick()" ng-disabled="inProgres">Cancel</button>
+
+</div>

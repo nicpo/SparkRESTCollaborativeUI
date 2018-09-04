@@ -1,0 +1,150 @@
+<div>
+    <div ng-show="startupComplete" style="height: 100%">
+    <nav class="navbar navbar-default navbar-fixed-top an-navbar" ng-controller="NavBarCtrl">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav navbar-left" style="vertical-align: middle">
+                <li>
+                    <div class="nav-brand">
+                        <div class="logo-img" ng-click="toDashBoard()">
+                        </div>
+                        <div class="logo-label">
+                            <span>{{contextLabel}}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="li-create" ng-show="createDatasetEnabled">
+                    <div class="an-nav-btn" ng-click="import()">
+                        <div aria-hidden="true" class="an-nav-btn-import an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Import</div>
+                    </div>
+                </li>
+                <li class="li-save" ng-show="saveEnabled">
+                    <div class="an-nav-btn" ng-click="onSaveClick()">
+                        <div aria-hidden="true" class="an-nav-btn-save an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Save</div>
+                    </div>
+                </li>
+                <li class="li-analyse" ng-show="analysisEnabled" dropdown>
+                    <div class="an-nav-btn" dropdown-toggle>
+                        <div aria-hidden="true" class="an-nav-btn-analyse an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Analyze</div>
+                    </div>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onCorrelationClick()">
+                            <a>Correlation</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onKMeansClick()">
+                            <a>K-means clustering</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onLinRegrClick()">
+                            <a>Linear regression</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onLogRegrClick()">
+                            <a>Logistic regression</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onSVMClick()">
+                            <a>SVM</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onNBayesClick()">
+                            <a>Naive Bayes</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onDTreeClick()">
+                            <a>Decision tree</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onRForestClick()">
+                            <a>Random forest</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="statistics.onSumStatClick()">
+                            <a>Summary statistics</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="li-predictions" ng-show="predictionsEnabled">
+                    <div class="an-nav-btn" ng-click="onPredictionsClick()">
+                        <div aria-hidden="true" class="an-nav-btn-predictions an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Predictions</div>
+                    </div>
+                </li>
+                <li class="li-filter" ng-show="filterEnabled">
+                    <div class="an-nav-btn" ng-click="onFilterClick()">
+                        <div aria-hidden="true" class="an-nav-btn-filter an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Filter</div>
+                    </div>
+                </li>
+                <li class="li-analyse" ng-show="analysisEnabled" dropdown>
+                    <div class="an-nav-btn" dropdown-toggle>
+                        <div aria-hidden="true" class="an-nav-btn-analyse an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Features</div>
+                    </div>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="an-analyze-dropdwn-item" ng-click="onFeaturesAddClick()">
+                            <a>Add feature</a>
+                        </li>
+                        <li class="an-analyze-dropdwn-item" ng-click="onFeaturesDeleteClick()">
+                            <a>Delete features</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="li-comment" ng-show="commentEnabled">
+                    <div class="an-nav-btn" ng-click="onCommentClick()">
+                        <div aria-hidden="true" class="an-nav-btn-comment an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Comment</div>
+                    </div>
+                </li>
+                <li class="li-share" ng-show="shareEnabled">
+                    <div class="an-nav-btn" ng-click="onShareClick()">
+                        <div aria-hidden="true" class="an-nav-btn-share an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Share</div>
+                    </div>
+                </li>
+                <li class="li-download" ng-show="downloadEnabled">
+                    <div class="an-nav-btn" ng-click="onDownloadClick()">
+                        <div aria-hidden="true" class="an-nav-btn-download an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Download</div>
+                    </div>
+                </li>
+                <li class="li-trash" ng-show="deleteEnabled">
+                    <div class="an-nav-btn" ng-click="onDeleteClick()">
+                        <div aria-hidden="true" class="an-nav-btn-trash an-nav-btn-ico"></div>
+                        <div class='an-nav-btn-lbl'>Delete</div>
+                    </div>
+                </li>
+                <li class="li-divider"></li>
+                <li class="li-lyt"  ng-show="showGridToggle">
+                    <div ng-model="showGridView" class="an-nav-btn-sm" btn-checkbox btn-checkbox-true="1"
+                         btn-checkbox-false="0">
+                        <div aria-hidden="true" class="an-nav-btn-lyt an-nav-btn-ico"></div>
+                    </div>
+                </li>
+                <li class="li-info">
+                    <div ng-model="showSidebar" class="an-nav-btn-tgl" btn-checkbox btn-checkbox-true="1"
+                         btn-checkbox-false="0">
+                        <div aria-hidden="true" class="an-nav-btn-info an-nav-btn-ico"></div>
+                    </div>
+                </li>
+                <li style="height: 50px; line-height: 76px;vertical-align: middle">
+                    <span dropdown  on-toggle="toggled(open)"
+                          style="position: relative;padding-right:15px">
+                        <a class="an-dropdown-user" dropdown-toggle>
+                            {{userEmail}} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu an-dropdown-user-menu" offsetWidth="50px" role="menu">
+                            <li><a ng-click="onSignOutClick()" href="">Sign out</a></li>
+                        </ul>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="main-content" ng-class="{cut: showSidebar}">
+        <div app-view-segment="1"></div>
+    </div>
+    <ng-include src="'html/sidebar.html'"></ng-include>
+    </div>
+    <div class="loadingMask"  ng-show="!startupComplete">
+        <img class="center-block" src="css/img/loading.gif">
+    </div>
+</div>

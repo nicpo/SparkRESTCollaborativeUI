@@ -1,0 +1,8 @@
+<div class="panel panel-default">
+    <div class="activities-list">
+        <form ng-repeat="activity in activities" class="comment"">
+            <div class="comment-info">{{activity.created | date}}<span class="pull-right">{{activity.user}}</span></div>
+            <div class="comment-text">{{activity.text}}</div>
+        </form>
+    </div>
+</div>

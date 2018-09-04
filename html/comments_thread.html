@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+    <div class="comments-list">
+        <form ng-repeat="comment in comments track by comment.created" class="comment" editable-form name="commentForm" onaftersave="update(comment)">
+            <div class="comment-info">{{comment.created | date}}<span class="pull-right">{{comment.user}}</span></div>
+            <div class="comment-text" editable-text="comment.text">{{comment.text}}</div>
+            <div class="comment-info" ng-if="comment.updated">Updated: {{comment.updated | date}}</div>
+            <div ng-if="comment.user === username" class="comment-buttons-block">
+                <span class="comment-button pull-left" ng-click="commentForm.$show()" ng-hide="commentForm.$visible">Edit</span>
+                <span class="comment-button pull-left" ng-click="commentForm.$cancel()" ng-show="commentForm.$visible">Cancel</span>
+                <span class="comment-button comment-save-button pull-left" ng-click="commentForm.$submit()" ng-show="commentForm.$visible">Save</span>
+                <span class="comment-button pull-right" ng-click="delete(comment)">Delete</span>
+            </div>
+        </form>
+    </div>
+    <div class="comment-reply-block" ng-show="replyEnabled">
+        <form ng-submit="reply(replyText)">
+            <textarea  class="form-control" placeholder="Reply..." ng-model="replyText"></textarea>
+            <button type="submit" class="btn btn-default btn-sm" style="margin-top: 5px">Reply</button>
+        </form>
+    </div>
+</div>
